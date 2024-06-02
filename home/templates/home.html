@@ -1,0 +1,84 @@
+
+
+{% extends 'layout.html' %}
+{% include 'nav.html' %}
+{% load static %}
+{% block content %}
+<h2 class="text-center my-4">Welcome User</h2>
+
+<div class="container">
+    <!-- Messages Section -->
+    <div class="row">
+        {% if messages %}
+            <div class="col-md-12">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Form Section -->
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form action="" method="POST" autocomplete="off">
+                {% csrf_token %}
+                <div class="form-group my-3">
+                    <label for="pname">Enter your Name</label>
+                    <input type="text" class="form-control" name="pname" required>
+                </div>
+                <div class="form-group my-3">
+                    <label for="dname">Enter your Doctor's Name</label>
+                    <input type="text" class="form-control" name="dname" required>
+                </div>
+                <div class="form-group my-3">
+                    <label for="date">Choose the Date</label>
+                    <input type="date" class="form-control" name="date" required>
+                </div>
+                <div class="form-group my-3">
+                    <label for="phone_number">Enter your WhatsApp Number</label>
+                    <input type="text" class="form-control" name="phone_number" placeholder="e.g. 1234567890" required>
+                </div>
+                <input type="submit" value="Submit" class="btn btn-primary w-100">
+            </form>
+        </div>
+    </div>
+
+    <!-- Booking Data Section -->
+    
+    {% if datas %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <hr>
+                <h1 class="text-center">Appointment Details</h1>
+                <table class="table">
+                    <thead>
+                        <th>S.no</th>
+                        <th>Patient_ID</th>
+                        <th>PatienName</th>
+                        <th>DoctorName</th>
+                        <th>Appointment Date</th>
+                        <th>Status</th>
+                </thead>
+                <tbody>
+                    {% for d in datas %}
+                    <tr><td>{{forloop.counter}}</td>
+                        <td>{{d.patient_id}}</td>
+                        <td>{{d.patient.name}}</td>
+                        <td>{{d.doctor.name}}</td>
+                        <td>{{d.date}}</td>
+                        <td>{{ d.status|yesno:"Booked,Not Booked" }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    {% endif %}
+{% endblock %}
